@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>API Data Display - Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+      }
+      .navbar {
+        margin-bottom: 20px;
+      }
+      .card {
+        border: none;
+        border-radius: 8px;
+        transition: transform 0.3s;
+      }
+      .card:hover {
+        transform: scale(1.05);
+      }
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+      .dashboard-title {
+        color: #333;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Dashboard</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="employees.html">Employees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="departments.html">Departments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jobs.html">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jobsHistory.html">Job History</a>
+          </li>
+        </ul>
+        <button id="logoutButton" class="btn btn-outline-light">Logout</button>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container">
+      <div class="row">
+        <!-- Card for Employees -->
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Employees</h5>
+              <p class="card-text">Manage employee records</p>
+              <a href="employees.html" class="btn btn-primary"
+                >View Employees</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Card for Departments -->
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Departments</h5>
+              <p class="card-text">View department details</p>
+              <a href="departments.html" class="btn btn-primary"
+                >View Departments</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Card for Jobs -->
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Jobs</h5>
+              <p class="card-text">Explore job listings</p>
+              <a href="jobs.html" class="btn btn-primary">View Jobs</a>
+            </div>
+          </div>
+        </div>
+        <!-- Card for Job History -->
+        <div class="col-md-3">
+          <div class="card text-center shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Job History</h5>
+              <p class="card-text">Check job history records</p>
+              <a href="jobsHistory.html" class="btn btn-primary"
+                >View Job History</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Check if the user is authenticated
+      const token = localStorage.getItem("jwtToken");
+      if (!token) {
+        window.location.href = "login.html";
+      }
+
+      // Logout functionality
+      document
+        .getElementById("logoutButton")
+        .addEventListener("click", function () {
+          localStorage.removeItem("jwtToken");
+          window.location.href = "login.html";
+        });
+    </script>
+  </body>
+</html>

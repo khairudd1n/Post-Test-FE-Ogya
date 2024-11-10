@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Job Management</title>
+  </head>
+  <style>
+    .modal-header {
+      background-color: #007bff;
+      color: white;
+    }
+    .modal-footer button {
+      width: 100px;
+    }
+  </style>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">Dashboard</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="employees.html">Employees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="departments.html">Departments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jobs.html">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jobsHistory.html">Job History</a>
+          </li>
+        </ul>
+        <button id="logoutButton" class="btn btn-outline-light">Logout</button>
+      </div>
+    </nav>
+
+    <!-- Page Title and Add Button -->
+    <div class="container my-5">
+      <h2 class="my-4 text-center">Jobs</h2>
+
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createJobModal"
+        >
+          Add New Job
+        </button>
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="Search jobs..."
+          style="width: 300px"
+        />
+      </div>
+
+      <div id="pagination" class="mb-3"></div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered" id="jobTable">
+          <thead class="table-dark">
+            <tr>
+              <th>Job ID</th>
+              <th>Job Title</th>
+              <th>Min Salary</th>
+              <th>Max Salary</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="jobTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal for creating employee -->
+    <div
+      class="modal fade"
+      id="createJobModal"
+      tabindex="-1"
+      aria-labelledby="createJobModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createJobModalLabel">Create New Job</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="createJobForm">
+              <div class="mb-3">
+                <label for="jobTitle" class="form-label">Job Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="jobTitle"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="minSalary" class="form-label">Min Salary</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="minSalary"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="maxSalary" class="form-label">Max Salary</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="maxSalary"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div
+      class="modal fade"
+      id="editJobModal"
+      tabindex="-1"
+      aria-labelledby="editJobModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editJobModalLabel">Edit Job</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="submitEditJob(event)">
+              <input type="hidden" id="editJobId" />
+              <!-- Form fields -->
+              <div class="form-group">
+                <label for="editJobTitle">Job Title</label>
+                <input
+                  type="text"
+                  id="editJobTitle"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editMinSalary">Min Salary</label>
+                <input
+                  type="number"
+                  id="editMinSalary"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editMaxSalary">Max Salary</label>
+                <input
+                  type="number"
+                  id="editMaxSalary"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="jobsCrud.js"></script>
+  </body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employees</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz4fnFO9gybC1PI1yK6SffAwPSWnyxrO3e6PscfqKwVd2EqnF5eZ2e4zKg"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+      integrity="sha384-S6yIAEQTT+q/ezJpUXfuMs3aRC4FdmwddPAUxdxcPLqFZRS9mYknVPmH4ga+L5ml"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <style>
+    .modal-header {
+      background-color: #007bff;
+      color: white;
+    }
+    .modal-footer button {
+      width: 100px;
+    }
+  </style>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">Dashboard</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="employees.html">Employees</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="departments.html">Departments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jobs.html">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="jobsHistory.html">Job History</a>
+          </li>
+        </ul>
+        <button id="logoutButton" class="btn btn-outline-light">Logout</button>
+      </div>
+    </nav>
+
+    <div class="container my-5">
+      <h1 class="my-4 text-center">Employees</h1>
+
+      <!-- Employee Data Table -->
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <h2>List of Employees</h2>
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createEmployeeModal"
+        >
+          Create Employee
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-end mb-3">
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="Search employees..."
+          style="width: 300px"
+        />
+      </div>
+
+      <div id="pagination" class="mb-3"></div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered" id="employeeTable">
+          <thead class="table-dark">
+            <tr>
+              <th>Employee ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Hire Date</th>
+              <th>Job Title</th>
+              <th>Salary</th>
+              <th>Commission Pct</th>
+              <th>Manager ID</th>
+              <th>Department Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="employeeTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal for creating employee -->
+    <div
+      class="modal fade"
+      id="createEmployeeModal"
+      tabindex="-1"
+      aria-labelledby="createEmployeeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createEmployeeModalLabel">
+              Create New Employee
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="createEmployeeForm">
+              <div class="mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required />
+              </div>
+              <div class="mb-3">
+                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phoneNumber"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="hireDate" class="form-label">Hire Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="hireDate"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="jobId">Job</label>
+                <select id="jobId" class="form-control" required>
+                  <option value="">-- Select Job --</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="salary" class="form-label">Salary</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="salary"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="commissionPct" class="form-label"
+                  >Commission %</label
+                >
+                <input type="text" class="form-control" id="commissionPct" />
+              </div>
+              <div class="mb-3">
+                <label for="managerId" class="form-label">Manager ID</label>
+                <input type="number" class="form-control" id="managerId" />
+              </div>
+              <div class="mb-3">
+                <label for="departmentId">Department</label>
+                <select id="departmentId" class="form-control" required>
+                  <option value="">-- Select Department --</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div
+      class="modal fade"
+      id="editEmployeeModal"
+      tabindex="-1"
+      aria-labelledby="editEmployeeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editEmployeeModalLabel">
+              Edit Employee
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="submitEditEmployee(event)">
+              <input type="hidden" id="editEmployeeId" />
+              <div class="form-group">
+                <label for="editFirstName">First Name</label>
+                <input
+                  type="text"
+                  id="editFirstName"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editLastName">Last Name</label>
+                <input
+                  type="text"
+                  id="editLastName"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editEmail">Email</label>
+                <input
+                  type="email"
+                  id="editEmail"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editPhoneNumber">Phone Number</label>
+                <input
+                  type="text"
+                  id="editPhoneNumber"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editHireDate">Hire Date</label>
+                <input
+                  type="date"
+                  id="editHireDate"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editDepartmentId">Department</label>
+                <select id="editDepartmentId" class="form-control" required>
+                  <option value="">Select Department</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editCommissionPct">Commission Pct</label>
+                <input
+                  type="text"
+                  id="editCommissionPct"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editJobId">Job</label>
+                <select id="editJobId" class="form-control" required>
+                  <option value="">Select Job</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editSalary">Salary</label>
+                <input
+                  type="number"
+                  id="editSalary"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="employeesCrud.js"></script>
+  </body>
+</html>
